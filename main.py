@@ -10,13 +10,14 @@ from halo import Halo
 query = input("Input your query: ")
 url = "https://www.phind.com/search?q=" + query
 
-# Configure ChromeOptions to suppress logging
+# suppress logging
 chrome_options = Options()
-chrome_options.add_argument("--log-level=3")  # Fatal errors only
+chrome_options.add_argument("--log-level=3")
+# make the browser not open
 chrome_options.add_argument("--headless")
 chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-# Initialize the webdriver with the modified options
+# init the webdriver
 driver = webdriver.Chrome(options=chrome_options)
 
 try:
@@ -27,20 +28,21 @@ try:
     # Get the page content
     driver.get(url)
 
-    # Wait for the DOM to be fully loaded
+    # wait until its all loaded
     WebDriverWait(driver, timeout=50).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
     time.sleep(15)
-    # Get the elements with the specific CSS selector
+
+    # Get the elements
     answer_elements = driver.find_elements(By.CSS_SELECTOR, "main div.fs-5")
 
-    # Initialize an empty list to store paragraph texts
+    # init the list
     paragraph_texts = []
 
-    # Extract text content of the paragraph elements
+    # get content
     for answer_element in answer_elements:
         paragraph_texts.append(answer_element.text.strip())
 
-    # Print the extracted text for each paragraph
+    # print it
     for text in paragraph_texts:
         # Stop spinner
         spinner.stop()
