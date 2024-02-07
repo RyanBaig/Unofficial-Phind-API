@@ -29,8 +29,6 @@ The project is designed to extract specific information from Phind's web pages u
 ## Technologies Used
 - [Python 3.8+](https://python.org)
 - [Selenium](https://selenium.dev)
-- [BeautifulSoup4](https://beautiful-soup-4.readthedocs.io/en/latest/)
-- [requests-html](https://requests.readthedocs.io/projects/requests-html/en/latest/)
 - [Halo (for a nice CLI spinner)](https://github.com/manrajgrover/halo)
 
 ## Contributing

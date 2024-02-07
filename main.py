@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from halo import Halo
 
 # Initialize vars
 query = input("Input your query: ")
@@ -12,26 +13,38 @@ url = "https://www.phind.com/search?q=" + query
 # Configure ChromeOptions to suppress logging
 chrome_options = Options()
 chrome_options.add_argument("--log-level=3")  # Fatal errors only
+chrome_options.add_argument("--headless")
 chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
 # Initialize the webdriver with the modified options
 driver = webdriver.Chrome(options=chrome_options)
 
 try:
+    # Start the spinner 
+    spinner = Halo("Getting Answer from Phind...\n\n\n\n\n \n", spinner="dots")
+    spinner.start()
+
     # Get the page content
     driver.get(url)
 
     # Wait for the DOM to be fully loaded
     WebDriverWait(driver, timeout=50).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
-    time.sleep(10)
-    # Get the element with the specific CSS selector
-    answer_element = driver.find_element(By.CSS_SELECTOR, "main div.fs-5 p.text-black.mb-2.text-break")
+    time.sleep(15)
+    # Get the elements with the specific CSS selector
+    answer_elements = driver.find_elements(By.CSS_SELECTOR, "main div.fs-5")
 
-    # Extract text content of the paragraph element
-    desired_text = answer_element.text
+    # Initialize an empty list to store paragraph texts
+    paragraph_texts = []
 
-    # Print the extracted text
-    print("Desired text:", desired_text.strip())
+    # Extract text content of the paragraph elements
+    for answer_element in answer_elements:
+        paragraph_texts.append(answer_element.text.strip())
+
+    # Print the extracted text for each paragraph
+    for text in paragraph_texts:
+        # Stop spinner
+        spinner.stop()
+        print(text)
 
 finally:
     # Close the browser
